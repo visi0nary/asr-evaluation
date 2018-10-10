@@ -19,6 +19,7 @@ Contains the main method for the CLI.
 """
 
 import argparse
+from argparse import Namespace
 
 # For some reason Python 2 and Python 3 disagree about how to import this.
 try:
@@ -49,6 +50,8 @@ def get_parser():
                         help='Down-case the text before running the evaluation.')
     parser.add_argument('-e', '--remove-empty-refs', action='store_true',
                         help='Skip over any examples where the reference is empty.')
+    parser.add_argument('-prog', '--programmatically', action='store_true',
+                        help='Return a dictionary with results (useful if you use this code within other python programs).')
 
     return parser
 
@@ -60,3 +63,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+def asr_programmatic_wrapper(ref, hyp, head_ids, tail_ids, case_insensitive, remove_empty_refs):
+    programmatic_ns = Namespace(ref=open(ref), hyp=open(hyp), head_ids=head_ids, tail_ids=tail_ids, case_insensitive=case_insensitive, remove_empty_refs=remove_empty_refs, print_instances=False, print_errors=False, confusions=False, min_word_count=False, print_wer_vs_length=False, programmatically=True)
+    return other_main(programmatic_ns)

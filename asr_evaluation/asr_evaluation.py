@@ -54,7 +54,6 @@ substitution_table = defaultdict(int)
 # These are the editdistance opcodes that are condsidered 'errors'
 error_codes = ['replace', 'delete', 'insert']
 
-
 # TODO - rename this function.  Move some of it into evaluate.py?
 def main(args):
     """Main method - this reads the hyp and ref files, and creates
@@ -96,6 +95,11 @@ def main(args):
     print('WER: {:10.3%} ({:10d} / {:10d})'.format(wer, error_count, ref_token_count))
     print('WRR: {:10.3%} ({:10d} / {:10d})'.format(wrr, match_count, ref_token_count))
     print('SER: {:10.3%} ({:10d} / {:10d})'.format(ser, sent_error_count, counter))
+    if(args.programmatically):
+        return {"sentence_count" : [counter],
+                "wer" : [wer, error_count, ref_token_count],
+                "wrr" : [wrr, match_count, ref_token_count],
+                "ser" : [ser, sent_error_count, counter]}
 
 
 def process_line_pair(ref_line, hyp_line, case_insensitive=False, remove_empty_refs=False):
